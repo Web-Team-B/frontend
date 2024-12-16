@@ -1,0 +1,45 @@
+/* 전체 화면을 나누는 부모 그리드 */
+.app-container {
+  display: grid;
+  grid-template-columns: 1fr 2fr 3fr 4fr; /* 3열 구조 설정 */
+  height: 100vh; /* 전체 화면 높이 */
+  gap: 25px; /* 셀 간 간격 */
+}
+
+/* 왼쪽 1열을 세부적으로 2행으로 나누는 자식 그리드 */
+.left-grid {
+  display: grid;
+  grid-template-rows: 1fr 1fr; /* 2행으로 나눔 */
+  gap: 10px;
+}
+
+/* 각 영역 스타일 */
+.chart-traffic {
+  background-color: #f1f1f1;;
+  padding: 10px;
+}
+
+.chart-speed {
+  background-color: #f1f1f1;
+  padding: 10px;
+}
+
+.toll-map-area {
+  background-color: #f1f1f1;
+  padding: 10px;
+
+  display: flex; /* Flexbox 사용 */
+  justify-content: center; /* 수평 중앙 정렬 */
+  align-items: center; /* 수직 중앙 정렬 */
+}
+
+.no-toll-map-area {
+  background-color: #d9f1f9;
+  padding: 10px;
+
+  display: flex; /* Flexbox 사용 */
+  flex-direction: column;
+  justify-content: center; /* 수평 중앙 정렬 */
+  align-items: center; /* 수직 중앙 정렬 */
+}
+

@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { MapContainer, TileLayer, GeoJSON, useMap } from "react-leaflet";
 import * as d3 from "d3";
 import "leaflet/dist/leaflet.css";
-import axios from "axios";
 import L from "leaflet";
 
 const NetworkMap = ({ geoData }) => {
@@ -51,7 +50,7 @@ const NetworkMap = ({ geoData }) => {
   return (
     <MapContainer 
       bounds={bounds} // 지정한 범위 사용
-      style={{ width: "900px", height: "600px" }}
+      style={{ width: "500px", height: "400px" }}
       boundsOptions={{ padding: [25, 25] }}
     >
       <TileLayer

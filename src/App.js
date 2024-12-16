@@ -1,15 +1,17 @@
 import React, {  useEffect,useState } from "react";
-import NetworkMap from "./components/NetworkMap";
-import RoadChart from "./components/RoadChart";
+import "./style.css";
 import axios from "axios";
+import SpeedChart from "./components/SpeedChart";
+import TrafficChart from "./components/TrafficChart";
+import NetworkMap from "./components/NetworkMap";
+
 
 const App = () => {
-  const [chartData, setChartData] = useState([]);
-  const [geoData, setGeoData] = useState(null);
+  const [geoData, setGeoData] = useState(null); //기본 도로 시각화 데이터
+  const [noTollData, setNoTollData] = useState(null); // 요금 없음 데이터를 포함한 지도 데이터
 
   useEffect(() => {
-    // GeoJSON 데이터 로드 (SUMO 네트워크 변환 데이터)
-    // http://127.0.0.1:5000/api/gangnam/geojson 형태로 GeoJSON을 제공한다고 가정
+
     axios.get("http://127.0.0.1:5000/api/gangnam/geojson")
       .then(response => {
         setGeoData(response.data);
@@ -18,23 +20,18 @@ const App = () => {
   }, []);
 
 
-//   const fetchRoadData = (roadId) => {
-//     // 클릭된 도로의 정보를 API를 통해 가져오기
-//     axios.get(`http://127.0.0.1:5000/api/road/info?roadId=${roadId}`)
-//       .then((response) => {
-//         const { trafficVolume } = response.data; // API 응답 예시
-//         setChartData(trafficVolume); // 그래프 데이터 업데이트
-//       })
-//       .catch((error) => console.error("Error fetching road info:", error));
-//   };
-
   return (
-    <div style={{ display: "flex", gap: "20px" }}>
-      <div style={{ flex: 2 }}>
-        <NetworkMap geoData={geoData}/>
+    <div className="app-container">
+      <div className="left-grid">
+        <TrafficChart data={null} />
+        <SpeedChart data={null} />
       </div>
-      <div style={{ flex: 1 }}>
-        <RoadChart data={chartData} />
+      <div className="toll-map-area">
+        <NetworkMap geoData={geoData} />
+      </div>
+      <div className="no-toll-map-area">
+        <h3>통행료 X</h3>
+        <NetworkMap geoData={geoData} />
       </div>
     </div>
   );

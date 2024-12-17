@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { MapContainer, TileLayer, GeoJSON, useMap } from "react-leaflet";
 import * as d3 from "d3";
 import "leaflet/dist/leaflet.css";
+import axios from "axios";
 import L from "leaflet";
 
 const NetworkMap = ({ geoData }) => {
@@ -10,6 +11,7 @@ const NetworkMap = ({ geoData }) => {
     [37.528, 127.078]  // 북동 (North-East) 좌표
   );
 
+  console.log(geoData);
 
     // Feature마다 Tooltip 추가
   const onEachFeature = (feature, layer) => {

@@ -11,14 +11,13 @@ const NetworkMap = ({ geoData }) => {
     [37.528, 127.078]  // 북동 (North-East) 좌표
   );
 
-  console.log(geoData);
 
     // Feature마다 Tooltip 추가
   const onEachFeature = (feature, layer) => {
 
     // 클릭 이벤트
     layer.on("click", (e) => {
-      console.log("Feature clicked:", feature);
+
     });
     // 툴팁 추가
     layer.on("mouseover", () => {

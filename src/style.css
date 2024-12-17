@@ -74,3 +74,15 @@
   justify-content: center;
   align-items: center;
 }
+
+.chart-title {
+  font-size: 1.5em;          /* 글자 크기 */
+  font-weight: bold;         /* 글자 굵기 */
+  color: #ffffff;            /* 글자 색상 (흰색) */
+  text-align: center;        /* 가운데 정렬 */
+  margin-bottom: 10px;       /* 아래 여백 */
+  padding: 10px;             /* 안쪽 여백 */
+  background-color: #3A3A3A; 
+  border-radius: 8px;        /* 테두리 둥글게 */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* 그림자 추가 */
+}

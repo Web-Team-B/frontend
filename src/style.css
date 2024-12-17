@@ -29,6 +29,7 @@
   padding: 10px;
 
   display: flex; /* Flexbox 사용 */
+  flex-direction: column;
   justify-content: center; /* 수평 중앙 정렬 */
   align-items: center; /* 수직 중앙 정렬 */
 }
@@ -43,3 +44,33 @@
   align-items: center; /* 수직 중앙 정렬 */
 }
 
+.road-selection {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* 2열 배치 */
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.road-option {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.apply-button {
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+.apply-button:hover {
+  background-color: #0056b3;
+}
+
+.color-legend {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

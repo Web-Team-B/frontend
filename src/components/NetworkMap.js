@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { MapContainer, TileLayer, GeoJSON, useMap } from "react-leaflet";
+import React from "react";
+import { MapContainer, TileLayer, GeoJSON } from "react-leaflet";
 import * as d3 from "d3";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
@@ -20,10 +20,18 @@ const NetworkMap = ({ geoData }) => {
     });
     // 툴팁 추가
     layer.on("mouseover", () => {
-      layer.bindTooltip(
-        `Edge ID: ${feature.properties.edge_id}<br>Lane ID: ${feature.properties.lane_id}`,
-        { sticky: true }
-      ).openTooltip();
+
+      const { edge_id, lane_id, volume, speed } = feature.properties;
+
+      // 툴팁 내용 업데이트
+      const tooltipContent = `
+        <b>Edge ID:</b> ${edge_id || "N/A"}<br>
+        <b>Lane ID:</b> ${lane_id || "N/A"}<br>
+        <b>통행량:</b> ${volume !== null ? volume : "N/A"}<br>
+        <b>속도:</b> ${speed !== null ? (speed * 3.6).toFixed(2) : "N/A"} km/h
+      `;
+      
+      layer.bindTooltip(tooltipContent, { sticky: true }).openTooltip();
     });
 
     layer.on("mouseout", () => {
@@ -33,15 +41,16 @@ const NetworkMap = ({ geoData }) => {
 
   // 스타일 함수: trafficVolume에 따라 색상 결정
   const styleFunction = (feature) => {
-    const volume = feature.properties.trafficVolume;
+    const volume = feature.properties.volume;
+
     // 여기서 volume 값의 범위를 고려해서 색상 스케일 설정
     // 예: 0~1000 사이의 값이라 가정
     const colorScale = d3.scaleLinear()
-      .domain([0, 1000])
-      .range(["green", "red"]);
+      .domain([0, 5000, 10000])      // 입력 범위를 3단계로 나눔
+      .range(["green", "yellow", "red"]); // 세 가지 색상 보간
 
     return {
-      color: "black",
+      color: colorScale(volume),
       weight: 2,
       fillOpacity: 0,      // 채우기 없음
     };
@@ -65,78 +74,3 @@ const NetworkMap = ({ geoData }) => {
 };
 
 export default NetworkMap;
-// import React, { useEffect, useRef, useState } from "react";
-// import * as d3 from "d3";
-// import axios from "axios";
-
-// const NetworkMap = () => {
-//   const svgRef = useRef();
-//   const [networkData, setNetworkData] = useState(null);
-
-//   useEffect(() => {
-//     axios
-//       .get("http://127.0.0.1:5000/api/gangnam/network")
-//       .then((response) => {
-//         setNetworkData(response.data);
-//       })
-//       .catch((error) => {
-//         console.error("Error fetching network data:", error);
-//       });
-//   }, []);
-
-//   useEffect(() => {
-//     if (networkData && svgRef.current) {
-//       const svg = d3.select(svgRef.current);
-//       svg.selectAll("*").remove();
-
-//       const width = 800;
-//       const height = 600;
-
-//       // 모든 coords 추출
-//       const allCoords = networkData.edges.flatMap((edge) =>
-//         edge.lanes.flatMap((lane) => lane.coords)
-//       );
-//       const allX = allCoords.map((d) => d[0]);
-//       const allY = allCoords.map((d) => d[1]);
-
-//       const xMin = d3.min(allX);
-//       const xMax = d3.max(allX);
-//       const yMin = d3.min(allY);
-//       const yMax = d3.max(allY);
-
-//       // 스케일 설정
-//       const xScale = d3.scaleLinear().domain([xMin, xMax]).range([50, width - 50]);
-//       const yScale = d3.scaleLinear().domain([yMin, yMax]).range([height - 50, 50]);
-
-//       // 통행량 범위 추출 (edge별 trafficVolume이 있다고 가정)
-//       // const trafficVolumes = networkData.edges.map(e => e.trafficVolume);
-//       // const minTrafficVolume = d3.min(trafficVolumes);
-//       // const maxTrafficVolume = d3.max(trafficVolumes);
-
-//       // 색상 스케일: 통행량 적으면 녹색, 많으면 빨강
-//       // const colorScale = d3.scaleLinear()
-//       //   .domain([minTrafficVolume, maxTrafficVolume])
-//       //   .range(["green", "red"]);
-
-//       const lineGenerator = d3.line()
-//         .x((d) => xScale(d[0]))
-//         .y((d) => yScale(d[1]))
-//         .curve(d3.curveBasis);
-
-//       networkData.edges.forEach((edge) => {
-//         edge.lanes.forEach((lane) => {
-//           svg
-//             .append("path")
-//             .attr("d", lineGenerator(lane.coords))
-//             .attr("stroke", "black") // edge 통행량 기반 색상
-//             .attr("stroke-width", 2)
-//             .attr("fill", "none");
-//         });
-//       });
-//     }
-//   }, [networkData]);
-
-//   return <svg ref={svgRef} width={800} height={600} style={{ background: '#eee' }}></svg>;
-// };
-
-// export default NetworkMap;

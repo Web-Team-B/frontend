@@ -13,11 +13,18 @@ const TrafficChart = ({ data }) => {
   return (
     <div className="chart-traffic">
       <h3>시간별 교통량</h3>
-      <BarChart width={400} height={200} data={data || data_ex}> {/* data가 없으면 data_ex 사용 */}
+      <BarChart width={400} height={200} data={data || data_ex}>
         <CartesianGrid strokeDasharray="3 3" />
         <XAxis dataKey="time" />
         <YAxis />
-        <Tooltip />
+        <Tooltip
+          formatter={(value, name, props) => {
+            if (name === "volume") {
+              return [`교통량: ${value}`]; // 교통량을 포맷하여 표시
+            }
+            return value;
+          }}
+        />
         <Bar dataKey="volume" fill="#8884d8" />
       </BarChart>
     </div>

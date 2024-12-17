@@ -22,7 +22,7 @@ const road_name_to_ids = {
     "학동로" : [1220030407, 1220030506, 1220030406, 1220030507, 1220030402, 1220030502,1220030403, 1220030503, 1220030404, 1220030504, 1220030405, 1220030505,1220031201, 1220031301, 1220031202, 1220031302, 1220032001, 1220032101,1220032002, 1220032102, 1220032003, 1220032103, 1220032801, 1220032901,1220032802, 1220032902, 1220032803, 1220032903, 1220032804, 1220032904,1220032805, 1220032905, 1220033201, 1220033301, 1220033202, 1220033302]
     }
 
-const NetworkTollMap = ({ noTollData }) => {
+const NetworkTollMap = ({ noTollData,onRoadSelection }) => {
   const bounds = L.latLngBounds(
     [37.490, 127.020], // 남서 (South-West) 좌표 
     [37.528, 127.078]  // 북동 (North-East) 좌표
@@ -77,6 +77,7 @@ const NetworkTollMap = ({ noTollData }) => {
             features: updatedFeatures,
           });
           setIsTollApplied(true)
+          onRoadSelection(selectedRoad); // App.js로 데이터 전달
         })
         .catch((error) => console.error("Error fetching toll data:", error));
     } else {
@@ -89,7 +90,7 @@ const NetworkTollMap = ({ noTollData }) => {
 
     // 클릭 이벤트
     layer.on("click", (e) => {
-      console.log("Feature clicked:", feature);
+      
     });
     // 툴팁 추가
     layer.on("mouseover", () => {
